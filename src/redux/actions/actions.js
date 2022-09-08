@@ -43,7 +43,6 @@ export const getCategoryList = () => async (dispatch) => {
 		);
 
 		const result = await client.post(queryCategoriesList);
-		
 		dispatch({ type: GET_CATEGORY_LIST, payload: result.category.products });
 	} catch (error) {}
 };
@@ -68,4 +67,17 @@ export const getProduct = (id) => async (dispatch) => {
 			payload: result.product,
 		});
 	} catch (error) {}
+};
+
+export const getCurrencies = async () => {
+	try {
+		const query = new Query("currencies", true).addFieldList([
+			"label",
+			"symbol",
+		]);
+		const result = await client.post(query);
+		return result.currencies;
+	} catch (error) {
+		console.error(error);
+	}
 };

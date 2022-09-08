@@ -5,12 +5,11 @@ import Nav from "./Components/Nav";
 import Product from "./Components/Categories/Product";
 import Cart from "./Components/UserCart/Cart/Cart";
 import FakeCart from "./Components/UserCart/Cart/FakeCart";
-import OverallData from "./Context";
-import { DEFAULT } from "./CONST";
+import { DEFAULT } from "./Utils/Constants";
 import forAddToCart from "./Utils/AppUtils/ForAddToCart";
 import changeLocalStorage from "./Utils/AppUtils/СhangeLocalStorage";
 import forChangeAttributes from "./Utils/AppUtils/ForChangeAttributes";
-import Category from "./Components/Categories/Category";
+import Category from "./Components/Categories/Categ/Category";
 
 class App extends React.PureComponent {
 	constructor(props) {
@@ -23,7 +22,7 @@ class App extends React.PureComponent {
 			savedHref: "/",
 			currentProduct: "",
 			categoryChanged: "no",
-			currencySimbol: "$",
+			currencySymbol: "$",
 			currencyNumber: 0,
 			countCart: 0,
 			miniCartProductChanged: "no",
@@ -37,7 +36,6 @@ class App extends React.PureComponent {
 		};
 
 		this.addToCart = this.addToCart.bind(this);
-		this.setDisplaySignIn = this.setDisplaySignIn.bind(this);
 		this.setMiniCartProductChanged = this.setMiniCartProductChanged.bind(this);
 		this.changeCurrency = this.changeCurrency.bind(this);
 		this.changeStartPage = this.changeStartPage.bind(this);
@@ -49,12 +47,6 @@ class App extends React.PureComponent {
 		this.changeAttributeOrders = this.changeAttributeOrders.bind(this);
 		this.setDefaultAttributes = this.setDefaultAttributes.bind(this);
 		this.setDefaultCategoryChanged = this.setDefaultCategoryChanged.bind(this);
-	}
-
-	setDisplaySignIn(arg) {
-		this.setState({
-			displaySignIn: arg,
-		});
 	}
 
 	changeStartPage(arg) {
@@ -219,40 +211,20 @@ class App extends React.PureComponent {
 		});
 	}
 
-	changeCurrency(simbol, currency, index) {
+	changeCurrency(symbol, currency, index) {
 		this.setState({
-			currencySimbol: simbol,
+			currencySymbol: symbol,
 			currency: currency,
 			currencyNumber: index,
 		});
 	}
 
 	async componentDidMount() {
-		// await this.props.getCategoryList();
-
-		// const unique = Array.from(
-		// 	new Set(this.props.categoryList.map(JSON.stringify))
-		// ).map(JSON.parse);
-
-		// this.setState({
-		// 	categoryList: unique,
-		// });
-		// const resultCurrencies = await JSON.parse(
-		// 	JSON.stringify(await getCurrencies())
-		// );
-
-		// this.setState({
-		// 	currencies: resultCurrencies.currencies,
-		// 	currency: resultCurrencies.currencies[0],
-		// });
+	
 	}
 
 	render() {
 		const {
-			categoriesList,
-			currencySimbol,
-			currencyNumber,
-			currencies,
 			countCart,
 			displayCountCart,
 			currentCategory,
@@ -261,87 +233,83 @@ class App extends React.PureComponent {
 			miniCartChanged,
 			miniCartProductChanged,
 			categoryChanged,
-			displaySignIn,
 			currentProduct,
 			attributeOrders,
+			currencySymbol,
+			currencyNumber,
 		} = this.state;
 		return (
 			<BrowserRouter>
-				<OverallData.Provider
-					value={{
-						categoriesList: categoriesList,
-						currencySimbol: currencySimbol,
-						currencyNumber: currencyNumber,
-						currencies: currencies,
-					}}>
-					<Nav
-						changeCurrency={this.changeCurrency}
-						countCart={countCart}
-						displayCountCart={displayCountCart}
-						currentCategory={this.props.category}
-						changeCurrentCategory={this.changeCurrentCategory}
-						savedCategory={savedCategory}
-						setCurrentProduct={this.setCurrentProduct}
-						setSavedHref={this.setSavedHref}
-						savedHref={savedHref}
-						miniCartChanged={miniCartChanged}
-						miniCartProductChanged={miniCartProductChanged}
-						setMiniCartProductChanged={this.setMiniCartProductChanged}
-						categoryList={this.state.categoryList}
-					/>
+				<Nav
+					changeCurrency={this.changeCurrency}
+					countCart={countCart}
+					displayCountCart={displayCountCart}
+					currentCategory={this.props.category}
+					changeCurrentCategory={this.changeCurrentCategory}
+					savedCategory={savedCategory}
+					setCurrentProduct={this.setCurrentProduct}
+					setSavedHref={this.setSavedHref}
+					savedHref={savedHref}
+					miniCartChanged={miniCartChanged}
+					miniCartProductChanged={miniCartProductChanged}
+					setMiniCartProductChanged={this.setMiniCartProductChanged}
+					categoryList={this.state.categoryList}
+					currencyNumber={currencyNumber}
+					currencySymbol={currencySymbol}
+				/>
 
-					<Switch>
-						<Route exact path={["/", `/category/:category`]}>
-							{({ match }) => (
-								<Category
-									match={match}
-									currentCategory={currentCategory}
-									categoryChanged={categoryChanged}
-									setSavedCategory={this.setSavedCategory}
-									setDefaultCategoryChanged={this.setDefaultCategoryChanged}
-									setCurrentProduct={this.setCurrentProduct}
-									addToCart={this.addToCart}
-									products={this.props.products}
-									getCategory={this.props.getCategory}
-								/>
-							)}
-						</Route>
-
-						<Route path="/product/:id">
-							{({ match }) => (
-								<Product
-									match={match}
-									currentProduct={currentProduct}
-									changeAttributes={this.changeAttributes}
-									addToCart={this.addToCart}
-									attributeOrders={attributeOrders}
-									changeAttributeOrders={this.changeAttributeOrders}
-									setDefaultAttributes={this.setDefaultAttributes}
-									setDisplaySignIn={this.setDisplaySignIn}
-									displaySignIn={displaySignIn}
-								/>
-							)}
-						</Route>
-
-						<Route path="/cart">
-							<Cart
+				<Switch>
+					<Route exact path={["/", `/category/:category`]}>
+						{({ match }) => (
+							<Category
+								match={match}
+								currentCategory={currentCategory}
+								categoryChanged={categoryChanged}
+								setSavedCategory={this.setSavedCategory}
+								setDefaultCategoryChanged={this.setDefaultCategoryChanged}
 								setCurrentProduct={this.setCurrentProduct}
-								setMiniCartProductChanged={this.setMiniCartProductChanged}
+								addToCart={this.addToCart}
+								products={this.props.products}
+								getCategory={this.props.getCategory}
+								currencySymbol={currencySymbol}
+								currencyNumber={currencyNumber}
 							/>
-						</Route>
+						)}
+					</Route>
 
-						<Route path="/fake-cart">
-							<FakeCart />
-						</Route>
-					</Switch>
-				</OverallData.Provider>
+					<Route path="/product/:id">
+						{({ match }) => (
+							<Product
+								match={match}
+								currentProduct={currentProduct}
+								changeAttributes={this.changeAttributes}
+								addToCart={this.addToCart}
+								attributeOrders={attributeOrders}
+								changeAttributeOrders={this.changeAttributeOrders}
+								setDefaultAttributes={this.setDefaultAttributes}
+								currencySymbol={currencySymbol}
+								currencyNumber={currencyNumber}
+							/>
+						)}
+					</Route>
+
+					<Route path="/cart">
+						<Cart
+							setCurrentProduct={this.setCurrentProduct}
+							setMiniCartProductChanged={this.setMiniCartProductChanged}
+							miniCartChanged={this.state.miniCartChanged}
+							currencySymbol={currencySymbol}
+							currencyNumber={currencyNumber}
+						/>
+					</Route>
+
+					<Route path="/fake-cart">
+						<FakeCart />
+					</Route>
+				</Switch>
 			</BrowserRouter>
 		);
 	}
 }
-const mapStateToProps = (state) => ({
-	categoryList: state.categoryList.categoryList,
-	category: state.category.category,
-	products: state.category.result,
-});
-export default (App);
+
+export default App;

@@ -1,10 +1,8 @@
 import React from "react";
-import * as styles from "./Product.module.css";
-import OverallData from "../../../Context";
 import creatAttributeNameList from "../../../Utils/CreatAttributeNameList";
 import creatAttributeOrdersList from "../../../Utils/CreatAttributeOrdersList";
-import setAttributes from "./ProdUtils/SetAttributes";
-import returnAttributes from "./ProdUtils/ReturnAttributes";
+import setAttributes from "../../../Utils/ProdUtils/SetAttributes";
+import returnAttributes from "../../../Utils/ProdUtils/ReturnAttributes";
 import {
 	AddToCart,
 	ProductContainer,
@@ -12,7 +10,6 @@ import {
 	ProductPrice,
 	ProductTitle,
 } from "../../../styles/products/Products.styled";
-import { CartButton } from "../../../styles/Common.styled";
 class ProductDetails extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -54,49 +51,45 @@ class ProductDetails extends React.PureComponent {
 	}
 
 	render() {
-		const { savedPrices,addToCart, attributeOrders, } =
-			this.props;
-		const { brand, name, attributes, id, instock, prices, gallery} = this.props.product;
+		const { addToCart, attributeOrders } = this.props;
+		const { brand, name, attributes, id, inStock, prices, gallery } =
+			this.props.product;
 		return (
 			<>
 				<ProductContainer>
 					<ProductTitle>{brand}</ProductTitle>
 					<span>{name}</span>
-					
+
 					{attributes ? this.returnAttributes(attributes) : ""}
 
-					<h4 className={styles.priceTitle}>Price:</h4>
+					<h4>Price:</h4>
 
-					{/* <ProductPrice>
-						<span className={styles.currencySimbol}>
-							{this.context.currencySimbol}
-						</span>
-						<span className={styles.currencyAmount}>
-							{savedPrices[this.context.currencyNumber]}
-						</span>
-					</ProductPrice> */}
+					<ProductPrice>
+						{/* currency symbol */}
+						<span>{this.props.currencySymbol}</span>
+						<span>{prices[this.props.currencyNumber].amount}</span>
+					</ProductPrice>
 
 					<AddToCart
 						onClick={() => {
 							addToCart(
-								instock,
+								inStock,
 								id,
 								this.creatAttributeNameList(attributes),
 								attributeOrders,
 								attributes,
-								attributes,
-								savedPrices,
+								attributes[0] ? attributes[0].items : "",
+								prices,
 								gallery,
 								name,
 								brand
 							);
 						}}
-						instock={instock} >
-						{instock ?<span >Add to cart</span>:<span>Out of stock</span> }
-						
+						inStock={inStock}>
+						{inStock ? <span>Add to cart</span> : <span>Out of stock</span>}
 					</AddToCart>
 
-					<ProductDescription ref={this.descrRef} className={styles.prodDescription}>{}</ProductDescription>
+					<ProductDescription ref={this.descrRef}></ProductDescription>
 				</ProductContainer>
 			</>
 		);

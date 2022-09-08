@@ -1,13 +1,10 @@
 import React from "react";
-import OverallData from "../../Context";
-import createLinksList from "./NavUtils/CreateLinksList";
+import createLinksList from "../../Utils/NavUtils/CreateLinksList";
 import { NavItem } from "../../styles/Nav.styled";
 import { NavLink, withRouter } from "react-router-dom";
 
 class NavCategories extends React.PureComponent {
-	constructor(props) {
-		super(props);
-	}
+
 
 	createLinksList = () => createLinksList.call(this);
 

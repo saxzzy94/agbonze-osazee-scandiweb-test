@@ -1,10 +1,9 @@
 import React from "react";
-import * as styles from "./Product.module.css";
 import PopUp from "../../../Elements/PopUp";
-import creatGallery from "./ProdUtils/CreatGallery";
+import creatGallery from "../../../Utils/ProdUtils/CreatGallery";
 import {
 	GalleryList,
-	ProductImg,
+	ImgProduct,
 } from "../../../styles/products/Products.styled";
 
 class ProductImages extends React.PureComponent {
@@ -36,17 +35,19 @@ class ProductImages extends React.PureComponent {
 		const { gallery } = this.props;
 
 		return (
-			<div>
+			<div style={{ display: "flex" }}>
 				<GalleryList>{this.creatGallery()}</GalleryList>
 
-				<ProductImg
+				<ImgProduct
 					style={
 						bigImage === "main" ? { display: "none" } : { display: "block" }
-					}
-					onClick={() => this.setBigImage("main")}
-					src={gallery[imageIndex]}
-					alt="#"
-				/>
+					}>
+					<img
+						onClick={() => this.setBigImage("main")}
+						src={gallery[imageIndex]}
+						alt="#"
+					/>
+				</ImgProduct>
 
 				<PopUp
 					inner={"img"}

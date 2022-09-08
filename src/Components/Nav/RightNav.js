@@ -1,12 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import OverallData from "../../Context";
-import linkOff from "./NavUtils/LinkOff";
-import creatCurrencyButtons from "./NavUtils/CreatCurrencyButtons";
-import showCurrencySimbol from "./NavUtils/ShowCurrencySimbol";
-import currencyImg from "../../Images/currency.svg";
-import arrowDown from "../../Images/arrow-down.svg";
-import cart from "../../Images/empty-cart.png";
+import linkOff from "../../Utils/NavUtils/LinkOff";
+import creatCurrencyButtons from "../../Utils/NavUtils/CreatCurrencyButtons";
+import showCurrencySymbol from "../../Utils/NavUtils/ShowCurrencySymbol";
+import arrowDown from "../../Assets/arrow-down.svg";
+import cart from "../../Assets/empty-cart.png";
 
 import {
 	CartIcon,
@@ -15,14 +13,9 @@ import {
 	NavWraper,
 } from "../../styles/Nav.styled";
 class RightNav extends React.PureComponent {
-	constructor(props) {
-		// eslint-disable-line
-		super(props);
-	}
-
 	linkOff = (event) => linkOff.call(this, event);
 
-	showCurrencySimbol = (index) => showCurrencySimbol.call(this, index);
+	showCurrencySymbol = (index) => showCurrencySymbol.call(this, index);
 
 	creatCurrencyButtons = () => creatCurrencyButtons.call(this);
 
@@ -30,9 +23,7 @@ class RightNav extends React.PureComponent {
 		const { category, showCartMini, displayCountCart, countCart } = this.props;
 		return (
 			<NavWraper>
-				<Currency>
-					<img src={currencyImg} alt="currency" />
-				</Currency>
+				<Currency>{this.props.currencySymbol}</Currency>
 
 				<CurrencyPicker>
 					<i>
@@ -51,7 +42,6 @@ class RightNav extends React.PureComponent {
 								? { display: "flex" }
 								: { display: "none" }
 						}>
-						<img src={cart} alt="arrow-down" />
 						{countCart}
 					</span>
 
@@ -65,7 +55,5 @@ class RightNav extends React.PureComponent {
 		);
 	}
 }
-
-RightNav.contextType = OverallData;
 
 export default RightNav;

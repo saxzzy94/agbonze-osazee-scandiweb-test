@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const NavContainer = styled.nav`
 	position: relative;
-	margin-bottom: 80px;
 	z-index: 1;
 `;
 export const NavWraper = styled.div`
@@ -52,6 +51,28 @@ export const CurrencyPicker = styled.div`
 	margin-right: 10px;
 	cursor: pointer;
 	z-index: 2;
+	ul {
+		display: none;
+		position: absolute;
+		background-color: #fff;
+		top: 20px;
+		left: -25px;
+		padding-top: 20px;
+		padding-left: 5px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		li {
+			display: block;
+			width: 70px;
+			font-weight: 500;
+			font-size: 18px;
+			color: #1d1f22;
+			margin-bottom: 10px;
+		}
+	}
+
+	&:hover ul {
+		display: block;
+	}
 `;
 
 export const CartIcon = styled.div`
@@ -92,6 +113,7 @@ export const Backdrop = styled.div`
 			? `position: fixed;
 	width: 100%;
 	height: 100vh;
-	background-color: rgba(206, 209, 202, 0.3);`
+	top: 0;
+	background-color: rgba(206, 209, 202, 0.3); overflow-y: hidden !important`
 			: `display: none;  `}
 `;

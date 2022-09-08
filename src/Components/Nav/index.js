@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import imgLogo from "../../Images/a-logo.png";
+import imgLogo from "../../Assets/a-logo.png";
 import CartMini from "../UserCart/CartMini/CartMini";
 import NavCategories from "./NavCategories";
 import {
@@ -10,7 +10,7 @@ import {
 	NavWraper,
 } from "../../styles/Nav.styled";
 import { Container } from "../../styles/Common.styled";
-import { getCategoryList } from "../../redux/actions/actions";
+import { getCategoryList, getCurrencies } from "../../redux/actions/actions";
 import RightNav from "./RightNav";
 class Nav extends React.PureComponent {
 	constructor(props) {
@@ -18,7 +18,7 @@ class Nav extends React.PureComponent {
 		this.miniCartRef = React.createRef();
 
 		this.state = {
-			open: true,
+			open: false,
 			categoryList: [],
 			category: "",
 		};
@@ -43,10 +43,20 @@ class Nav extends React.PureComponent {
 		const unique = Array.from(
 			new Set(this.props.categoryList.map(JSON.stringify))
 		).map(JSON.parse);
-
+		const currency = await getCurrencies();
 		this.setState({
 			categoryList: unique,
+			currencies: currency,
 		});
+	}
+
+	async componentDidUpdate() {
+		const body = document.querySelector("body");
+		if (this.state.open) {
+			body.style.overflowY = "hidden";
+		} else {
+			body.style.overflowY = "scroll";
+		}
 	}
 
 	render() {
@@ -61,6 +71,8 @@ class Nav extends React.PureComponent {
 			setSavedHref,
 			miniCartProductChanged,
 			setMiniCartProductChanged,
+			currencySymbol,
+			currencyNumber,
 		} = this.props;
 		return (
 			<NavContainer>
@@ -74,7 +86,7 @@ class Nav extends React.PureComponent {
 							categoryList={this.state.categoryList}
 						/>
 						<Logo>
-							<img src={imgLogo} alt="#" />
+							<img src={imgLogo} alt="logo" />
 						</Logo>
 						<RightNav
 							changeCurrency={changeCurrency}
@@ -83,30 +95,35 @@ class Nav extends React.PureComponent {
 							savedHref={savedHref}
 							category={this.state.category}
 							showCartMini={this.showCartMini}
+							currencies={this.state.currencies}
+							currencySymbol={currencySymbol}
+							currencyNumber={currencyNumber}
 						/>
 					</NavWraper>
 				</Container>
 
 				<Backdrop
 					onClick={() => this.setState({ open: false })}
-					open={this.state.open}>
-					<div ref={this.miniCartRef}>
-						<CartMini
-							hideCartMini={this.showCartMini}
-							category={this.state.category}
-							miniCartChanged={miniCartChanged}
-							setSavedHref={setSavedHref}
-							savedHref={savedHref}
-							miniCartProductChanged={miniCartProductChanged}
-							setMiniCartProductChanged={setMiniCartProductChanged}
-						/>
-					</div>
-				</Backdrop>
+					open={this.state.open}></Backdrop>
+				{this.state.open && (
+					<CartMini
+						hideCartMini={this.showCartMini}
+						category={this.state.category}
+						miniCartChanged={miniCartChanged}
+						setSavedHref={setSavedHref}
+						savedHref={savedHref}
+						miniCartProductChanged={miniCartProductChanged}
+						setMiniCartProductChanged={setMiniCartProductChanged}
+						currencySymbol={currencySymbol}
+						currencyNumber={currencyNumber}
+					/>
+				)}
 			</NavContainer>
 		);
 	}
 }
 const mapStateToProps = (state) => ({
 	categoryList: state.categoryList.categoryList,
+	currencies: state.currencies.currencies,
 });
 export default connect(mapStateToProps, { getCategoryList })(Nav);

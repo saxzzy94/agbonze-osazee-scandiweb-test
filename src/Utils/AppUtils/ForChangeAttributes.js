@@ -1,4 +1,4 @@
-import {DEFAULT} from '../../CONST';
+import {DEFAULT} from '../Constants';
 
 function creatControl(item) {
   const preControl = JSON.stringify(item).split('"')[1]

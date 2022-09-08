@@ -2,11 +2,16 @@ import styled from "styled-components";
 
 export const ProductContainer = styled.ul`
 	display: flex;
+	flex-direction: column;
+	margin: 0;
+`;
+export const CategoryContainer = styled.ul`
+	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	gap: 1rem;
 	color: #1d1f22;
 `;
-export const ProductItems = styled.li`
+export const CategoryItems = styled.li`
 	display: flex;
 	flex-direction: column;
 	width: 30%;
@@ -23,6 +28,14 @@ export const ProductItems = styled.li`
 		}
 	}
 `;
+
+export const ProductItems = styled.div`
+	display: flex;
+	justify-content: space-between;
+	margin-top: 80px;
+	color: #1d1f22;
+`;
+
 export const ProductImg = styled.img`
 	width: 100%;
 	background-color: rgb(226, 220, 220);
@@ -31,11 +44,27 @@ export const ProductImg = styled.img`
 	margin-right: 0;
 	margin-bottom: 20px;
 	display: flex;
-	justify-content: center;
 	width: 90%;
+	justify-content: center;
+`;
+
+export const ImgProduct = styled.div`
+	margin-left: 40px;
+	width: 610px;
+	display: flex;
+	align-items: flex-start;
+	img {
+		width: 100%;
+		cursor: zoom-in;
+	}
 `;
 export const ProductDetails = styled.div`
 	margin-top: auto;
+	h3 {
+		font-weight: 300;
+		font-size: 18px;
+		margin-bottom: 10px;
+	}
 `;
 export const ProductDescription = styled.div`
 	margin-top: 20px;
@@ -76,11 +105,43 @@ export const ProductAmount = styled.span`
 	padding-left: 3px;
 `;
 
-const GalleryWrapper = styled.div``;
+export const GalleryWrapper = styled.div`
+	width: 140px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	button {
+		width: 10px;
+		height: 25px;
+		padding: 7px;
+		position: absolute;
+		bottom: 50%;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		background-size: 60% 60%;
+		border: 2px solid rgba(255, 255, 255, 0.1);
+		border-radius: 3px;
+		background-color: rgba(194, 192, 192, 0.5);
+	}
+
+	.sliderDisplayLeft {
+		right: 84%;
+	}
+
+	.sliderDisplayRight {
+		right: 3%;
+	}
+	.sliderDisplayRight:hover {
+		border: 2px solid rgba(138, 132, 132, 0.7);
+	}
+
+	.sliderDisplayLeft:hover {
+		border: 2px solid rgba(138, 132, 132, 0.7);
+	}
+`;
 export const GalleryList = styled.ul`
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-evenly;
+	flex-direction: column;
 `;
 export const GalleryItem = styled.li`
 	width: 80px;
@@ -108,13 +169,26 @@ export const AddToCart = styled.button`
 	font-size: 16px;
 	color: #fff;
 	text-transform: uppercase;
-	background-color: ${({ instock }) => (instock ? "#5ece7b" : "#c8e98c")};
+	background-color: ${({ inStock }) => (inStock ? "#5ece7b" : "#c8e98c")};
 	width: 290px;
 	padding: 10px 0;
 	border: none;
-	cursor: ${({ instock }) => (instock ? `cell` : `not-allowed`)};
+	cursor: ${({ inStock }) => (inStock ? `cell` : `not-allowed`)};
 
 	&:hover span {
-		color: ${({ instock }) => !instock && `crimson`};
+		color: ${({ inStock }) => !inStock && `crimson`};
+	}
+`;
+
+export const GalleryCartItem = styled.li``;
+
+export const MiniCartProductImage = styled.div`
+	width: 105px;
+	min-height: 135px;
+	display: flex;
+	align-items: center;
+
+	img {
+		width: 100%;
 	}
 `;

@@ -1,22 +1,21 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import OverallData from "../../../Context";
+import { NavLink, withRouter } from "react-router-dom";
 import {
-	CartTitle,
 	MiniCartButtons,
 	MiniCartListWrapper,
+	MiniCartTitle,
 	MiniCartWraper,
 	PriceSummary,
 	Summary,
 } from "../../../styles/Cart.styled";
-import createCartMiniList from "./CartMiniUtils/CreateCartMiniLis";
+import createCartMiniList from "../../../Utils/CartMiniUtils/CreateCartMiniLis";
 
 class CartMini extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
 			jsonCart: "",
-			currencySimbol: "$",
+			currencySymbol: "$",
 			total: "00.00",
 		};
 	}
@@ -29,16 +28,15 @@ class CartMini extends React.PureComponent {
 		const cart = window.localStorage.getItem("cart");
 		const jsonCart = JSON.parse(cart);
 		let total = 0;
-
 		const checkDeleted = jsonCart.filter((item) => item.amount > 0);
 
 		checkDeleted.forEach((element) => {
-			total += element.prices[this.context.currencyNumber] * element.amount;
+			total += element.prices[this.props.currencyNumber] * element.amount;
 		});
 		window.localStorage.setItem("cart", JSON.stringify(checkDeleted));
 
 		this.setState({
-			currencySimbol: this.context.currencySimbol,
+			currencySymbol: this.props.currencySymbol,
 			total: total.toFixed(2),
 			jsonCart: checkDeleted,
 		});
@@ -78,13 +76,13 @@ class CartMini extends React.PureComponent {
 	}
 
 	render() {
-		const { jsonCart, currencySimbol, total } = this.state;
+		const { jsonCart, currencySymbol, total } = this.state;
 		return (
 			<MiniCartWraper>
-				<CartTitle>
+				<MiniCartTitle>
 					My bag, <span>{jsonCart.length}</span>
 					<span> items</span>
-				</CartTitle>
+				</MiniCartTitle>
 
 				<MiniCartListWrapper>
 					<ul>{this.createCartMiniList(jsonCart)}</ul>
@@ -94,7 +92,7 @@ class CartMini extends React.PureComponent {
 					<h4>Total</h4>
 					<PriceSummary>
 						<span>
-							{currencySimbol}
+							{currencySymbol}
 							{total}
 						</span>
 					</PriceSummary>
@@ -106,15 +104,11 @@ class CartMini extends React.PureComponent {
 							this.props.hideCartMini();
 							this.props.setSavedHref("/cart");
 						}}
-            id='view-bag'>
-						<NavLink to="/cart">
-							View bag
-						</NavLink>
+						id="view-bag">
+						<NavLink to="/cart">View bag</NavLink>
 					</button>
 
-					<button
-						onClick={() => this.checkOut()}
-            id='check-out'>
+					<button onClick={() => this.checkOut()} id="check-out">
 						Check out
 					</button>
 				</MiniCartButtons>
@@ -123,6 +117,4 @@ class CartMini extends React.PureComponent {
 	}
 }
 
-CartMini.contextType = OverallData;
-
-export default CartMini;
+export default withRouter(CartMini);
